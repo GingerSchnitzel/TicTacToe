@@ -9,7 +9,6 @@
 
 
 std::vector<std::pair<size_t, size_t>> makeInitialVector();
-std::pair<size_t, size_t> selectRandomPosition();
 
 // TIC TAC TOE GAME
 // 3 x 3 board
@@ -19,7 +18,7 @@ std::pair<size_t, size_t> selectRandomPosition();
 // Then, if the users wants to keep playing, the winner gets to choose first in a new game (either the user or the machine)
 // The machine will look at the available spots withing the board and mark one at its turn with the assigned symbol
 // The first one to fill 3 spots in a row with his symbol, wins.
-static bool firstGame{ true };
+
 
 class TicTacToeSession
 {
@@ -77,14 +76,16 @@ public:
 
 	}
 	// if the user has chosen a symbol, the machine should be assigned the other
-	char determineMachineSymbol(const char& userGuess)
+	void determineMachineSymbol()
 	{
-		switch (userGuess)
+		switch (userSymbol)
 		{
 		case 'X':
-			return machineSymbol = 'O';
+			machineSymbol = 'O';
+			return;
 		case 'O':
-			return machineSymbol = 'X';
+			machineSymbol = 'X';
+			return;
 		}
 	}
 
@@ -331,7 +332,7 @@ public:
 		std::cout << "The first one of us that gets 3 of his/her marks in a row (up, down, across, or diagonally) is the winner. \n";
 		std::cout << '\n';
 		userSymbol = getUserSymbol();
-		machineSymbol = determineMachineSymbol(userSymbol);
+		determineMachineSymbol();
 
 		while (!winner() && availablePositions.size() != 0)
 		{
