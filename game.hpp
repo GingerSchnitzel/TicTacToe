@@ -6,9 +6,14 @@
 #include <iostream>
 #include <utility>
 #include <algorithm>
+#include <string>
 
 
 std::vector<std::pair<size_t, size_t>> makeInitialVector();
+bool playAgain();
+
+
+
 
 // TIC TAC TOE GAME
 // 3 x 3 board
@@ -26,9 +31,12 @@ private:
 	std::array<std::array<char, 3>, 3> board;
 	std::vector<std::pair<size_t, size_t>> availablePositions;
 	//std::array <char, 2> symbols{ 'X', 'O' };
-	char userSymbol;
-	char machineSymbol;
-
+	static char userSymbol;
+	static char machineSymbol;
+	static bool firstGame;
+	static bool userWinner;
+	static bool machineWinner;
+	static bool tie;
 
 public:
 
@@ -38,9 +46,9 @@ public:
 		{' ', ' ', ' '},
 		{' ', ' ', ' '}
 		} },
-		availablePositions{ makeInitialVector() },
-		userSymbol{},
-		machineSymbol{}
+		availablePositions{ makeInitialVector() }
+
+
 	{
 
 	}
@@ -168,11 +176,17 @@ public:
 			if (board[0][0] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][0] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 			}
 		}
@@ -182,11 +196,17 @@ public:
 			if (board[1][0] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[1][0] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
@@ -197,26 +217,38 @@ public:
 			if (board[2][0] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[2][0] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
 		}
 
-		if ((board[0][0] == board[1][0]) && (board [1][0] == board[2][0]))
+		if ((board[0][0] == board[1][0]) && (board[1][0] == board[2][0]))
 		{
 			if (board[0][0] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][0] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
@@ -227,11 +259,17 @@ public:
 			if (board[0][1] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][1] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
@@ -242,11 +280,17 @@ public:
 			if (board[0][2] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][2] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
@@ -257,26 +301,38 @@ public:
 			if (board[0][0] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][0] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
 		}
 
-		if ((board[0][2] == board[1][1]) &&  (board [1][1] == board[2][0]))
+		if ((board[0][2] == board[1][1]) && (board[1][1] == board[2][0]))
 		{
 			if (board[0][2] == userSymbol)
 			{
 				std::cout << "Congrats, you have won!\n";
+				userWinner = true;
+				machineWinner = false;
+				tie = false;
 				return true;
 			}
 			else if (board[0][2] == machineSymbol)
 			{
 				std::cout << "You have lost! \n";
+				machineWinner = true;
+				userWinner = false;
+				tie = false;
 				return true;
 
 			}
@@ -319,7 +375,63 @@ public:
 
 	// if he wants to play again, chooser also gets to choose symbol again
 
+	void userMove()
+	{
+		std::cout << "Enter the position for your symbol: \n";
+		size_t userRow{ getPositionIndex("Row") };
+		size_t userColumn{ getPositionIndex("Column") };
+		std::pair <size_t, size_t> userRowColumn{ userRow, userColumn };
 
+
+		while (!positionAvailable(userRowColumn))
+		{
+			userRowColumn.first = getPositionIndex("Row");
+			userRowColumn.second = getPositionIndex("Column");
+		}
+		std::cout << '\n';
+
+	}
+
+	void machineMove()
+	{
+		std::pair<size_t, size_t> machinePosition = selectRandomPosition();
+		board[machinePosition.first][machinePosition.second] = machineSymbol;
+
+	}
+
+	void changeSymbol()
+	{
+		std::cout << "Would you like to change your symbol?";
+		std::string answer;
+
+		while (true)
+		{
+			std::cout << " y/n? ";
+
+			std::getline(std::cin, answer);
+
+			if (answer.length() != 1)
+			{
+				continue;
+			}
+
+			switch (answer[0])
+			{
+			case 'y':
+			case'Y':
+				userSymbol = getUserSymbol();
+				determineMachineSymbol();
+				std::cout << '\n';
+				return;
+
+			case 'N':
+			case'n':
+				std::cout << '\n';
+				return;
+			}
+		}
+
+	}
 
 
 
@@ -327,39 +439,99 @@ public:
 	//Play game
 	void playGame()
 	{
-		std::cout << "Welcome to Tic Tac Toe! \n";
-		std::cout << "You are going to take turns with me (your PC) in placing the symbol you're going to pick (X or O) at a position of your choosing. \n";
-		std::cout << "The first one of us that gets 3 of his/her marks in a row (up, down, across, or diagonally) is the winner. \n";
-		std::cout << '\n';
-		userSymbol = getUserSymbol();
-		determineMachineSymbol();
+		if (firstGame)
+		{
+			std::cout << "Welcome to Tic Tac Toe! \n";
+			std::cout << "You are going to take turns with your PC in placing the symbol you're going to pick (X or O) at a position of your choosing. \n";
+			std::cout << "The first one of you that gets 3 of his/her chosen symbol in a row (up, down, across, or diagonally) is the winner. \n";
+			std::cout << '\n';
+			userSymbol = getUserSymbol();
+			determineMachineSymbol();
+			std::cout << '\n';
+		}
+		else
+		{
+			if (userWinner == true && tie == false)
+			{
+				std::cout << "You have won, so you'll get to start the next game session!\n";
+				changeSymbol();
+			}
+			else if (machineWinner == true && tie == false)
+			{
+				std::cout << "You have lost, so your PC will get to start this game session!\n";
+				changeSymbol();
+			}
+			else if (tie == true)
+			{
+				if (machineWinner == false || userWinner == false)
+				{ 
+				std::cout << "There has been a tie previously. Since we don't have a previous winner, you'll get to start this session.\n";
+				userWinner = true;
+				tie = false;
+				}
+				else
+				{
+					std::cout << "There has been a tie previously. The previous winner will get to start this session.\n";
+					tie = false;
+				}
+				
+				changeSymbol();
+			}
+		}
 
 		while (!winner() && availablePositions.size() != 0)
 		{
-			std::cout << "Enter the position for your symbol: \n";
-			size_t userRow{ getPositionIndex("Row") };
-			size_t userColumn{ getPositionIndex("Column") };
-			std::pair <size_t, size_t> userRowColumn{ userRow, userColumn };
-
-			while (!positionAvailable(userRowColumn))
+			while (firstGame == true || userWinner == true)
 			{
-				userRowColumn.first = getPositionIndex("Row");
-				userRowColumn.second = getPositionIndex("Column");
+				
+				userMove();
+				if (winner())
+				{
+					std::cout << '\n';
+					printBoard();
+					firstGame = false;
+					return;
+				}
+				else
+				{
+					if (availablePositions.size() != 0)
+					{ 
+					machineMove();
+					}
+					printBoard();
+					break;
+				}
+				
 			}
 			
-			if (winner() || availablePositions.size() == 0)
+			while (machineWinner == true)
 			{
-				std::cout << '\n';
+				machineMove();
 				printBoard();
-				return;
+				if (winner())
+				{
+					std::cout << '\n';
+					printBoard();
+					return;
+				}
+				else
+				{
+					userMove();
+					printBoard();
+					break;
+				}
+				
 			}
 
-			std::pair<size_t, size_t> machinePosition = selectRandomPosition();
-			board[machinePosition.first][machinePosition.second] = machineSymbol;
-
-			std::cout << '\n';
-			printBoard();
+			if (availablePositions.size() == 0)
+			{
+				tie = true;
+				break;
+			}
+			
 		}
+		
+
 
 
 	}
