@@ -527,8 +527,6 @@ public:
 
 			if (availablePositions.size() == 0)
 			{
-				std::cout << '\n';
-				std::cout << "Tie!\n";
 				tie = true;
 				break;
 			}
