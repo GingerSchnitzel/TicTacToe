@@ -7,11 +7,11 @@
 #include <string>
 
 bool TicTacToeSession::firstGame{ true };
-char  TicTacToeSession::userSymbol{};
-char  TicTacToeSession::machineSymbol{};
-bool   TicTacToeSession::userWinner{ false };
-bool  TicTacToeSession::machineWinner{ false };
-bool  TicTacToeSession::tie{ false };
+char TicTacToeSession::userSymbol{};
+char TicTacToeSession::machineSymbol{};
+bool TicTacToeSession::userWinner{ false };
+bool TicTacToeSession::machineWinner{ false };
+bool TicTacToeSession::tie{ false };
 
 
 std::pair<size_t, size_t> TicTacToeSession::selectRandomPosition()
